@@ -1,28 +1,40 @@
-const symbols = {
+"use strict";
+
+/* const symbols = {
   SYM1: "./img/SYM1.png",
   SYM2: "./img/SYM2.png",
   SYM3: "./img/SYM3.png",
   SYM4: "./img/SYM4.png",
   SYM5: "./img/SYM5.png",
   SYM6: "./img/SYM6.png"
+} */
+
+const symbols = {
+  SYM1: "./img/001-virus.png",
+  SYM2: "./img/002-quarantine.png",
+  SYM3: "./img/003-virus.png",
+  SYM4: "./img/004-virus transmission.png",
+  SYM5: "./img/005-pipette.png",
+  SYM6: "./img/006-virus.png"
 }
 
 document.addEventListener("DOMContentLoaded", function () {
   var gameArea = {
     SPIN_BUTTON_SRC: "./img/BTN_Spin_d.png",
     ACTIVE_BUTTON_SRC: "./img/BTN_Spin.png",
-    BG_IMAGE_SRC: "url('./img/BG.png')",
+    // BG_IMAGE_SRC: "url('./img/BG.png')",
     // CANVAS_BORDER: "2px solid gray",
     SYMBOLS: symbols,
-    canvas: document.getElementById('canvas'),
+    canvas: document.getElementById('slot'),
 
     start: function () { // Set canvas property
       this.canvas.width = 960;
       this.canvas.height = 536;
       this.context = this.canvas.getContext("2d");
       // this.canvas.style.border = this.CANVAS_BORDER;
-      this.canvas.style.backgroundImage = this.BG_IMAGE_SRC;
-      this.frame();
+      // this.canvas.style.backgroundImage = this.BG_IMAGE_SRC;
+      // this.frame();
+	  this.canvasPos = this.canvas.getBoundingClientRect();
       this.loadSymbols(this.SYMBOLS);
       this.btn("inactive");
     },
@@ -30,9 +42,8 @@ document.addEventListener("DOMContentLoaded", function () {
     event: function () { // Event for click on spin button
       var _this = this;
       _this.canvas.addEventListener("click", function clickOnBtn(e) {
-        var x = e.clientX;
-        var y = e.clientY;
-        if (Math.pow(x - 884, 2) + Math.pow(y - 278, 2) < Math.pow(50, 2)) {
+        var x = e.clientX, y = e.clientY;
+        if (Math.pow(x - 884 - _this.canvasPos["x"], 2) + Math.pow(y - 278 - _this.canvasPos["y"], 2) < Math.pow(50, 2)) {
           _this.canvas.removeEventListener("click", clickOnBtn);
           _this.btn("inactive");
           _this.animateSymbols();
@@ -54,15 +65,15 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     },
 
-    frame: function () { // Draw middle frame
-      var ctx = this.context;
-      ctx.beginPath();
-      ctx.lineWidth = "4";
-      ctx.strokeStyle = "MidnightBlue";
-      const P = 5;
-      ctx.rect(69 - P, 187 - P, (180 + P) * 4, 161 + P * 2);
-      ctx.stroke();
-    },
+    // frame: function () { // Draw middle frame
+    //   var ctx = this.context;
+    //   ctx.beginPath();
+    //   ctx.lineWidth = "4";
+    //   ctx.strokeStyle = "MidnightBlue";
+    //   const P = 5;
+    //   ctx.rect(69 - P, 187 - P, (180 + P) * 4, 161 + P * 2);
+    //   ctx.stroke();
+    // },
 
     clear: function () { // Clear slot machine
       this.context.clearRect(0, 0, 800, this.canvas.height);
@@ -132,29 +143,17 @@ document.addEventListener("DOMContentLoaded", function () {
             symArr[i] = new Symbol(randSym, symArr[i].posX, (symArr[i].posY - 550 - 170));
           }
         }
-        _this.frame();
+        // _this.frame();
       }, 5);
     },
 
     checkResult: function () { // Match symbol selected by player with symbol selected by machine
-      var selectedSym = document.getElementById('select').value;
-      var randSel = null;
-
-      for (var i = 0; i < this.symbolsArr.length; i++) {
-        if (this.symbolsArr[i].posX === 309 && this.symbolsArr[i].posY === 190) {
-          randSel = this.symbolsArr[i];
-        }
-      }
-
       var middleRow = [69, 309, 553], // left, center, right
-        randRow = this.symbolsArr.filter(s => s.posY == 190 && middleRow.includes(s.posX));
-      console.log(randRow)
+        randRow = this.symbolsArr.filter(s => s.posY == 190 && middleRow.includes(s.posX)),
+        outcome = randRow.every(s => randRow[0].name === s.name);
 
-      if (randSel.name === selectedSym) { // Win
-        this.winAnimation(randSel);
-      } else { // Loss
-        this.btn("active");
-      }
+      console.log(outcome ? "Win" : "Loss");
+      this.btn("active");
     },
 
     winAnimation: function (selected) { // Resize symbol animation if win scenario
@@ -174,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
           ctx.drawImage(selImg, selposX++, selposY++, imgW -= 2, imgH -= 2);
           step > 20 ? clearInterval(winAnimation) : true;
         }
-        gameArea.frame();
+        // gameArea.frame();
       }, 50);
     }
   }
