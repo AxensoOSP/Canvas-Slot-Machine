@@ -1,15 +1,26 @@
-html, body {
+html,
+body {
 	height: 100%;
 }
 
 body {
-	background: rgb(57,0,255);
-	background: linear-gradient(90deg, rgba(57,0,255,1) 0%, rgba(255,0,0,1) 100%);
-}
-
-.center-canvas {
-	height: 100%;
+	background: white;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.imwasted {
+	background: rgb(255, 255, 255);
+	/* background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 1) 100%); */
+}
+
+.modal {
+	display: block;
+	pointer-events: none;
+	background-color: rgba(0, 0, 0, .7);
+}
+
+.show {
+	pointer-events: all;
 }

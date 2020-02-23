@@ -1,5 +1,3 @@
-"use strict";
-
 /* const symbols = {
   SYM1: "./img/SYM1.png",
   SYM2: "./img/SYM2.png",
@@ -19,13 +17,14 @@ const symbols = {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  var gameArea = {
-    SPIN_BUTTON_SRC: "./img/BTN_Spin_d.png",
-    ACTIVE_BUTTON_SRC: "./img/BTN_Spin.png",
+  gameArea = {
+    SPIN_BUTTON_SRC: "./img/btn_disabled.png",
+    ACTIVE_BUTTON_SRC: "./img/btn_start.png",
     // BG_IMAGE_SRC: "url('./img/BG.png')",
     // CANVAS_BORDER: "2px solid gray",
     SYMBOLS: symbols,
     canvas: document.getElementById('slot'),
+    MODAL: document.getElementById('resultModal'),
 
     start: function () { // Set canvas property
       this.canvas.width = 960;
@@ -34,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // this.canvas.style.border = this.CANVAS_BORDER;
       // this.canvas.style.backgroundImage = this.BG_IMAGE_SRC;
       // this.frame();
-	  this.canvasPos = this.canvas.getBoundingClientRect();
+      this.canvasPos = this.canvas.getBoundingClientRect();
       this.loadSymbols(this.SYMBOLS);
       this.btn("inactive");
     },
@@ -42,7 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
     event: function () { // Event for click on spin button
       var _this = this;
       _this.canvas.addEventListener("click", function clickOnBtn(e) {
-        var x = e.clientX, y = e.clientY;
+        var x = e.clientX,
+          y = e.clientY;
         if (Math.pow(x - 884 - _this.canvasPos["x"], 2) + Math.pow(y - 278 - _this.canvasPos["y"], 2) < Math.pow(50, 2)) {
           _this.canvas.removeEventListener("click", clickOnBtn);
           _this.btn("inactive");
@@ -77,6 +77,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     clear: function () { // Clear slot machine
       this.context.clearRect(0, 0, 800, this.canvas.height);
+    },
+
+    showModal: function () {
+      this.btn("inactive");
+      this.MODAL.classList.add("show")
+      this.MODAL.removeAttribute("aria-hidden")
+      this.MODAL.setAttribute("aria-modal", true)
+    },
+
+    hideModal: function () {
+      this.btn("active");
+      this.MODAL.classList.remove("show")
+      this.MODAL.setAttribute("aria-hidden", true)
+      this.MODAL.removeAttribute("aria-modal")
     },
 
     loadSymbols: function (symbols) { // Create array with loaded images
@@ -152,8 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
         randRow = this.symbolsArr.filter(s => s.posY == 190 && middleRow.includes(s.posX)),
         outcome = randRow.every(s => randRow[0].name === s.name);
 
-      console.log(outcome ? "Win" : "Loss");
-      this.btn("active");
+      console.log(outcome ? this.showModal() : this.showModal());
     },
 
     winAnimation: function (selected) { // Resize symbol animation if win scenario
