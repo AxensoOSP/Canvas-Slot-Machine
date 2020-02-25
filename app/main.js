@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
     SYMBOLS: symbols,
     canvas: document.getElementById('slot'),
     MODAL: document.getElementById('resultModal'),
+    MODAL_CONTENT: document.querySelector('.modal-content'),
 
     start: function () { // Set canvas property
       this.canvas.width = 960;
@@ -79,18 +80,20 @@ document.addEventListener("DOMContentLoaded", function () {
       this.context.clearRect(0, 0, 800, this.canvas.height);
     },
 
-    showModal: function () {
+    showModal: function (win, title) {
       this.btn("inactive");
-      this.MODAL.classList.add("show")
-      this.MODAL.removeAttribute("aria-hidden")
-      this.MODAL.setAttribute("aria-modal", true)
+      this.MODAL_CONTENT.style.borderColor = win ? "var(--green)" : "var(--red)";
+      document.querySelector(".modal .modal-title").innerHTML = title;
+      this.MODAL.classList.add("show");
+      this.MODAL.removeAttribute("aria-hidden");
+      this.MODAL.setAttribute("aria-modal", true);
     },
 
     hideModal: function () {
       this.btn("active");
-      this.MODAL.classList.remove("show")
-      this.MODAL.setAttribute("aria-hidden", true)
-      this.MODAL.removeAttribute("aria-modal")
+      this.MODAL.classList.remove("show");
+      this.MODAL.setAttribute("aria-hidden", true);
+      this.MODAL.removeAttribute("aria-modal");
     },
 
     loadSymbols: function (symbols) { // Create array with loaded images
@@ -166,7 +169,10 @@ document.addEventListener("DOMContentLoaded", function () {
         randRow = this.symbolsArr.filter(s => s.posY == 190 && middleRow.includes(s.posX)),
         outcome = randRow.every(s => randRow[0].name === s.name);
 
-      console.log(outcome ? this.showModal() : this.showModal());
+      setTimeout(() => {
+        outcome ? this.showModal(true, "Win") : this.showModal(false, "Loss");
+        // Math.random() <= 0.5 ? this.showModal(true, "Win") : this.showModal(false, "Loss");
+      }, 500);
     },
 
     winAnimation: function (selected) { // Resize symbol animation if win scenario

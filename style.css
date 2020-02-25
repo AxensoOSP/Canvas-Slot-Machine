@@ -24,3 +24,11 @@ body {
 .show {
 	pointer-events: all;
 }
+
+/* .win {
+	border-color: var(--blue);
+}
+
+.loss {
+	border-color: var(--red);
+} */
