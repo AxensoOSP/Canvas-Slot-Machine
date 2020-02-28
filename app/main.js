@@ -2,9 +2,6 @@ const symbols = {
   SYM1: "./img/001-virus.png",
   SYM2: "./img/002-quarantine.png",
   SYM3: "./img/003-virus.png"
-  // SYM4: "./img/004-virus transmission.png",
-  // SYM5: "./img/005-pipette.png",
-  // SYM6: "./img/006-virus.png"
 }
 
 document.addEventListener("DOMContentLoaded", function () {
