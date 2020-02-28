@@ -1,19 +1,10 @@
-/* const symbols = {
-  SYM1: "./img/SYM1.png",
-  SYM2: "./img/SYM2.png",
-  SYM3: "./img/SYM3.png",
-  SYM4: "./img/SYM4.png",
-  SYM5: "./img/SYM5.png",
-  SYM6: "./img/SYM6.png"
-} */
-
 const symbols = {
   SYM1: "./img/001-virus.png",
   SYM2: "./img/002-quarantine.png",
-  SYM3: "./img/003-virus.png",
-  SYM4: "./img/004-virus transmission.png",
-  SYM5: "./img/005-pipette.png",
-  SYM6: "./img/006-virus.png"
+  SYM3: "./img/003-virus.png"
+  // SYM4: "./img/004-virus transmission.png",
+  // SYM5: "./img/005-pipette.png",
+  // SYM6: "./img/006-virus.png"
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -28,13 +19,16 @@ document.addEventListener("DOMContentLoaded", function () {
     MODAL_CONTENT: document.querySelector('.modal-content'),
 
     start: function () { // Set canvas property
-      this.canvas.width = 960;
-      this.canvas.height = 536;
+      this.canvasPos = this.canvas.getBoundingClientRect();
+
+      this.canvas.width = this.canvasPos.width;
+      this.canvas.height = this.canvasPos.height;
       this.context = this.canvas.getContext("2d");
+
       // this.canvas.style.border = this.CANVAS_BORDER;
       // this.canvas.style.backgroundImage = this.BG_IMAGE_SRC;
       // this.frame();
-      this.canvasPos = this.canvas.getBoundingClientRect();
+
       this.loadSymbols(this.SYMBOLS);
       this.btn("inactive");
     },
@@ -123,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var positionsY = [-170, 10, 190, 370];
       for (var i = 0; i < positionsX.length; i++) {
         for (var j = 0; j < positionsY.length; j++) {
-          var randSym = Math.floor(Math.random() * 6);
+          var randSym = Math.floor(Math.random() * Object.keys(symbols).length);
           var symbol = new Symbol(randSym, positionsX[i], positionsY[j]);
           symbol.drawElement(positionsX[i], positionsY[j]);
           symbolsArr.push(symbol);
@@ -156,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
           symArr[i].drawElement(symArr[i].posX, symArr[i].posY += speed);
 
           if (symArr[i].posY >= 550) { // Replace the symbol which is under canvas by new which is above canvas
-            var randSym = Math.floor(Math.random() * 6);
+            var randSym = Math.floor(Math.random() * Object.keys(symbols).length);
             symArr[i] = new Symbol(randSym, symArr[i].posX, (symArr[i].posY - 550 - 170));
           }
         }

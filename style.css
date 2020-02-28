@@ -10,9 +10,9 @@ body {
 	align-items: center;
 }
 
-.imwasted {
-	background: rgb(255, 255, 255);
-	/* background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 1) 100%); */
+canvas {
+	min-height: 536px;
+	min-width: 960px;
 }
 
 .modal {
@@ -24,11 +24,3 @@ body {
 .show {
 	pointer-events: all;
 }
-
-/* .win {
-	border-color: var(--blue);
-}
-
-.loss {
-	border-color: var(--red);
-} */
